@@ -1,0 +1,1100 @@
+<!-- ============================================================
+     20DS TRACKER MODULE — United Security Group - Centralized HUB
+     Injected dynamically into index.html via DSAgent
+     ============================================================ -->
+<style>
+/* ── 20DS Module — Inherits Parent Light Theme ── */
+:root {
+  --ds-bg:       var(--bg,       #eef1f6);
+  --ds-surface:  var(--surface,  #ffffff);
+  --ds-card:     var(--surface,  #ffffff);
+  --ds-surface2: var(--surface2, #f4f6fb);
+  --ds-surface3: var(--surface3, #eaecf4);
+  --ds-border:   var(--border,   #d6dbe8);
+  --ds-cyan:     var(--teal,     #007a8a);
+  --ds-green:    var(--green,    #136e42);
+  --ds-amber:    var(--gold,     #b87000);
+  --ds-red:      var(--red,      #c83030);
+  --ds-purple:   var(--purple,   #4e42b8);
+  --ds-blue:     var(--navy,     #1e4799);
+  --ds-text:     var(--text,     #18243c);
+  --ds-muted:    var(--muted,    #526278);
+  --ds-font:     Tahoma, 'Segoe UI', Arial, sans-serif;
+  --ds-mono:     'Roboto Mono', monospace;
+}
+
+#view-20dstracker {
+  display: none;
+  font-family: var(--ds-font);
+  background: var(--ds-bg);
+  min-height: 100vh;
+  color: var(--ds-text);
+  padding: 0;
+}
+#view-20dstracker.active { display: block; }
+
+/* ── DS Topbar ── */
+.ds-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 10px;
+  border-bottom: 1px solid var(--ds-border);
+  background: var(--ds-blue);
+}
+.ds-topbar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+.ds-topbar-title span {
+  color: rgba(255,255,255,.58);
+  font-size: 11px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+.ds-topbar-right { display: flex; gap: 8px; align-items: center; }
+
+/* ── DS Tabs ── */
+.ds-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  background: var(--ds-surface);
+  border-bottom: 1px solid var(--ds-border);
+  overflow-x: auto;
+}
+.ds-tab {
+  padding: 11px 16px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all .15s;
+  user-select: none;
+}
+.ds-tab:hover { color: var(--ds-text); background: var(--ds-surface2); }
+.ds-tab.active { color: var(--ds-cyan); border-bottom-color: var(--ds-cyan); }
+
+/* ── DS Content ── */
+.ds-content { padding: 18px 24px; }
+
+/* ── KPI Bar ── */
+.ds-kpi-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.ds-kpi {
+  flex: 1;
+  min-width: 130px;
+  background: var(--ds-card);
+  border: 1px solid var(--ds-border);
+  border-radius: 12px;
+  padding: 16px 16px 13px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(18,36,80,.06);
+  transition: transform .18s, box-shadow .18s;
+}
+/* left accent bar */
+.ds-kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 4px;
+  border-radius: 12px 0 0 12px;
+}
+/* corner glow circle */
+.ds-kpi::after {
+  content: '';
+  position: absolute;
+  top: -14px; right: -14px;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  opacity: .08;
+  pointer-events: none;
+}
+.ds-kpi.cyan   { background: linear-gradient(135deg, #fff 60%, rgba(0,122,138,.04)); }
+.ds-kpi.green  { background: linear-gradient(135deg, #fff 60%, rgba(19,110,66,.04)); }
+.ds-kpi.red    { background: linear-gradient(135deg, #fff 60%, rgba(200,48,48,.04)); }
+.ds-kpi.purple { background: linear-gradient(135deg, #fff 60%, rgba(78,66,184,.04)); }
+.ds-kpi.blue   { background: linear-gradient(135deg, #fff 60%, rgba(30,71,153,.04)); }
+.ds-kpi.amber  { background: linear-gradient(135deg, #fff 60%, rgba(184,112,0,.04)); }
+.ds-kpi.teal   { background: linear-gradient(135deg, #fff 60%, rgba(0,140,106,.04)); }
+.ds-kpi.cyan::before   { background: linear-gradient(180deg, #00c9b8, var(--ds-cyan)); }
+.ds-kpi.green::before  { background: linear-gradient(180deg, #1ab86e, var(--ds-green)); }
+.ds-kpi.red::before    { background: linear-gradient(180deg, #e84545, var(--ds-red)); }
+.ds-kpi.purple::before { background: linear-gradient(180deg, #7b6fde, var(--ds-purple)); }
+.ds-kpi.blue::before   { background: linear-gradient(180deg, #4f80ff, var(--ds-blue)); }
+.ds-kpi.amber::before  { background: linear-gradient(180deg, #f0a800, var(--ds-amber)); }
+.ds-kpi.teal::before   { background: linear-gradient(180deg, #00c27a, #008c6a); }
+.ds-kpi.cyan::after    { background: var(--ds-cyan); }
+.ds-kpi.green::after   { background: var(--ds-green); }
+.ds-kpi.red::after     { background: var(--ds-red); }
+.ds-kpi.purple::after  { background: var(--ds-purple); }
+.ds-kpi.blue::after    { background: var(--ds-blue); }
+.ds-kpi.amber::after   { background: var(--ds-amber); }
+.ds-kpi.teal::after    { background: #008c6a; }
+.ds-kpi-icon {
+  font-size: 18px;
+  margin-bottom: 8px;
+  line-height: 1;
+  opacity: .75;
+}
+.ds-kpi-val {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--ds-mono);
+  line-height: 1;
+  margin-bottom: 3px;
+  letter-spacing: -.02em;
+}
+.ds-kpi.cyan .ds-kpi-val   { color: var(--ds-cyan); }
+.ds-kpi.green .ds-kpi-val  { color: var(--ds-green); }
+.ds-kpi.red .ds-kpi-val    { color: var(--ds-red); }
+.ds-kpi.purple .ds-kpi-val { color: var(--ds-purple); }
+.ds-kpi.blue .ds-kpi-val   { color: var(--ds-blue); }
+.ds-kpi.amber .ds-kpi-val  { color: var(--ds-amber); }
+.ds-kpi.teal .ds-kpi-val   { color: #008c6a; }
+.ds-kpi-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+}
+.ds-kpi-hint {
+  font-size: 9px;
+  color: var(--ds-muted);
+  margin-top: 5px;
+  opacity: 0;
+  transition: opacity .15s;
+  font-style: italic;
+}
+.ds-kpi-clickable:hover .ds-kpi-hint { opacity: 1; }
+.ds-kpi-trend {
+  font-size: 9.5px;
+  font-weight: 600;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: 0.01em;
+}
+.ds-kpi-trend.up-good   { color: var(--ds-green); }
+.ds-kpi-trend.up-bad    { color: var(--ds-red); }
+.ds-kpi-trend.down-good { color: var(--ds-green); }
+.ds-kpi-trend.down-bad  { color: var(--ds-red); }
+.ds-kpi-trend.neutral   { color: var(--ds-muted); }
+
+/* ── DS Table Card ── */
+.ds-table-card {
+  background: var(--ds-card);
+  border: 1px solid var(--ds-border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow, 0 1px 4px rgba(18,36,80,.07));
+}
+.ds-table-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--ds-border);
+  background: var(--ds-surface2);
+}
+.ds-table-hdr-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ds-blue);
+}
+.ds-tbl-wrap { overflow-x: auto; }
+.ds-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.ds-tbl th {
+  padding: 8px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-muted);
+  background: var(--ds-surface3);
+  border-bottom: 1px solid var(--ds-border);
+  white-space: nowrap;
+  text-align: left;
+}
+.ds-tbl td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--ds-border);
+  vertical-align: middle;
+  color: var(--ds-text);
+}
+.ds-tbl tr:last-child td { border-bottom: none; }
+.ds-tbl tr:hover td { background: rgba(0,122,138,.04); }
+.ds-tbl .mono { font-family: var(--ds-mono); font-size: 11px; }
+
+/* ── DS Badges ── */
+.ds-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--ds-mono);
+}
+.ds-badge.done     { background: rgba(19,110,66,.1);   color: var(--ds-green);  border: 1px solid rgba(19,110,66,.25); }
+.ds-badge.pending  { background: rgba(184,112,0,.1);   color: var(--ds-amber);  border: 1px solid rgba(184,112,0,.25); }
+.ds-badge.problem  { background: rgba(200,48,48,.08);  color: var(--ds-red);    border: 1px solid rgba(200,48,48,.22); }
+.ds-badge.notstart { background: rgba(82,98,120,.08);  color: var(--ds-muted);  border: 1px solid rgba(82,98,120,.2); }
+.ds-badge.fit      { background: rgba(19,110,66,.1);   color: var(--ds-green);  border: 1px solid rgba(19,110,66,.25); }
+.ds-badge.unfit    { background: rgba(200,48,48,.08);  color: var(--ds-red);    border: 1px solid rgba(200,48,48,.22); }
+.ds-badge.complete { background: rgba(0,122,138,.1);   color: var(--ds-cyan);   border: 1px solid rgba(0,122,138,.25); }
+.ds-badge.cancelled{ background: rgba(82,98,120,.08);  color: var(--ds-muted);  border: 1px solid rgba(82,98,120,.2); }
+
+/* ── Step Pills ── */
+@keyframes ds-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(184,112,0,.45); }
+  50%      { box-shadow: 0 0 0 5px rgba(184,112,0,0); }
+}
+.ds-steps-row { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.ds-pill-sep { color: var(--ds-border); font-size: 11px; margin: 0 1px; user-select: none; }
+
+/* ── Completed step: rectangle green label ── */
+.ds-step-pill {
+  height: 22px;
+  border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+  font-family: var(--ds-font);
+  cursor: default;
+  border: 1.5px solid;
+  transition: opacity .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0 7px;
+}
+
+/* Completed — green */
+.ds-step-pill.done { background: rgba(19,110,66,.13); color: var(--ds-green); border-color: rgba(19,110,66,.45); }
+.ds-step-pill.fit  { background: rgba(19,110,66,.13); color: var(--ds-green); border-color: rgba(19,110,66,.45); }
+
+/* Pending — amber rectangle */
+.ds-step-pill.pending { background: rgba(184,112,0,.1); color: var(--ds-amber); border-color: rgba(184,112,0,.45); }
+
+/* Problem — red rectangle */
+.ds-step-pill.problem { background: rgba(200,48,48,.1); color: var(--ds-red); border-color: rgba(200,48,48,.4); }
+
+/* Unfit — red rectangle */
+.ds-step-pill.unfit { background: rgba(200,48,48,.1); color: var(--ds-red); border-color: rgba(200,48,48,.4); }
+
+/* Not started — dim gray */
+.ds-step-pill.notstart { background: rgba(143,163,190,.1); color: var(--ds-muted); border-color: rgba(143,163,190,.3); font-size: 9px; opacity: .65; }
+
+/* Locked — slate, padlock icon prefix */
+.ds-step-pill.locked { background: rgba(82,98,120,.07); color: var(--ds-muted); border-color: rgba(82,98,120,.2); font-size: 9px; opacity: .55; cursor: not-allowed; }
+
+/* ── Steps Column Header & Cell ── */
+.ds-steps-col-hdr {
+  background: rgba(0,122,138,.1) !important;
+  color: var(--ds-cyan) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid var(--ds-cyan) !important;
+  text-shadow: 0 0 8px rgba(0,122,138,.4);
+}
+.ds-steps-cell {
+  border-left: 2px solid rgba(0,122,138,.2);
+  background: rgba(0,122,138,.025);
+  padding: 10px 14px !important;
+}
+
+/* ── DS Buttons ── */
+.ds-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 13px; border-radius: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.03em;
+  cursor: pointer; border: none;
+  font-family: var(--ds-font); transition: all .15s;
+}
+.ds-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.ds-btn.cyan  { background: rgba(0,122,138,.1);   color: var(--ds-cyan);   border: 1px solid rgba(0,122,138,.3); }
+.ds-btn.green { background: rgba(19,110,66,.09);  color: var(--ds-green);  border: 1px solid rgba(19,110,66,.28); }
+.ds-btn.amber { background: rgba(184,112,0,.09);  color: var(--ds-amber);  border: 1px solid rgba(184,112,0,.28); }
+.ds-btn.red   { background: rgba(200,48,48,.07);  color: var(--ds-red);    border: 1px solid rgba(200,48,48,.22); }
+.ds-btn.ghost { background: var(--ds-surface2);   color: var(--ds-muted);  border: 1px solid var(--ds-border); }
+.ds-btn.sm    { padding: 4px 9px; font-size: 10px; }
+.ds-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── DS Modal ── */
+.ds-modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(12,24,60,.45);
+  z-index: 3000; align-items: center; justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.ds-modal-overlay.open { display: flex; }
+.ds-modal {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: 14px;
+  width: 560px; max-width: 95vw; max-height: 90vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 18px 50px rgba(12,24,60,.22);
+  animation: dsSlideUp .18s ease;
+}
+@keyframes dsSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ds-modal-hdr {
+  padding: 14px 20px; display: flex; align-items: center;
+  justify-content: space-between; border-bottom: 1px solid var(--ds-border);
+  background: var(--ds-surface2);
+}
+.ds-modal-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ds-blue);
+}
+.ds-modal-close {
+  background: none; border: none; color: var(--ds-muted);
+  font-size: 18px; cursor: pointer; padding: 0; line-height: 1;
+}
+.ds-modal-close:hover { color: var(--ds-red); }
+.ds-modal-body { padding: 18px 20px; overflow-y: auto; flex: 1; }
+.ds-modal-ftr {
+  padding: 11px 20px; display: flex; gap: 8px;
+  justify-content: flex-end; border-top: 1px solid var(--ds-border);
+  background: var(--ds-surface2);
+}
+
+/* ── DS Form ── */
+.ds-fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.ds-fgrid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.ds-fgrid.cols1 { grid-template-columns: 1fr; }
+.ds-fg { display: flex; flex-direction: column; gap: 4px; }
+.ds-fg.span2 { grid-column: span 2; }
+.ds-flabel {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--ds-muted);
+}
+.ds-fi, .ds-fsel, .ds-fta {
+  background: var(--ds-surface2);
+  border: 1px solid var(--ds-border);
+  border-radius: 6px; padding: 7px 10px;
+  font-size: 12px; color: var(--ds-text);
+  font-family: var(--ds-font); transition: border .15s; outline: none;
+}
+.ds-fi:focus, .ds-fsel:focus, .ds-fta:focus {
+  border-color: var(--ds-cyan); background: #fff;
+}
+.ds-fta { resize: vertical; min-height: 60px; }
+
+/* ── DS Substep Toggles ── */
+.ds-substeps { display: flex; flex-direction: column; gap: 7px; margin-top: 7px; }
+.ds-substep-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; background: var(--ds-surface2);
+  border: 1px solid var(--ds-border); border-radius: 7px;
+  cursor: pointer; transition: all .14s;
+}
+.ds-substep-row:hover { border-color: rgba(0,122,138,.35); background: rgba(0,122,138,.04); }
+.ds-substep-row.checked { border-color: rgba(19,110,66,.35); background: rgba(19,110,66,.06); }
+.ds-substep-toggle {
+  width: 16px; height: 16px; border-radius: 3px;
+  border: 2px solid var(--ds-border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .14s; font-size: 10px;
+}
+.ds-substep-row.checked .ds-substep-toggle {
+  background: var(--ds-green); border-color: var(--ds-green); color: #fff;
+}
+.ds-substep-label { font-size: 12px; color: var(--ds-text); }
+
+/* ── Progress Bar (step completion) ── */
+.ds-progress-bar {
+  height: 4px; background: var(--ds-border);
+  border-radius: 2px; overflow: hidden;
+}
+.ds-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ds-cyan), var(--ds-green));
+  border-radius: 2px; transition: width .4s ease;
+}
+
+/* ── Search / Filter Bar ── */
+.ds-filter-bar {
+  display: flex; gap: 8px; align-items: center;
+  flex-wrap: wrap; margin-bottom: 12px;
+}
+.ds-search-wrap { position: relative; flex: 1; min-width: 180px; }
+.ds-search-wrap input {
+  width: 100%; box-sizing: border-box;
+  background: var(--ds-surface); border: 1px solid var(--ds-border);
+  border-radius: 7px; padding: 7px 10px 7px 30px;
+  font-size: 12px; color: var(--ds-text);
+  font-family: var(--ds-font); outline: none;
+}
+.ds-search-wrap input:focus { border-color: var(--ds-cyan); background: #fff; }
+.ds-search-wrap input::placeholder { color: var(--ds-muted); }
+.ds-search-wrap .ds-si {
+  position: absolute; left: 9px; top: 50%;
+  transform: translateY(-50%); color: var(--ds-muted);
+  font-size: 13px; pointer-events: none;
+}
+
+/* ── Divider ── */
+.ds-divider { border: none; border-top: 1px solid var(--ds-border); margin: 14px 0; }
+
+/* ── Empty State ── */
+.ds-empty {
+  text-align: center; padding: 40px 24px;
+  color: var(--ds-muted); font-size: 12.5px;
+}
+.ds-empty .ds-empty-icon { font-size: 32px; margin-bottom: 10px; opacity: .35; }
+
+/* ── Audit row ── */
+.ds-audit-row td { font-size: 11px; }
+
+/* ── Clickable KPI Cards ── */
+.ds-kpi-clickable { cursor: pointer; }
+.ds-kpi-clickable:hover                { transform: translateY(-3px); }
+.ds-kpi-clickable.cyan:hover           { box-shadow: 0 8px 24px rgba(0,122,138,.22); }
+.ds-kpi-clickable.green:hover          { box-shadow: 0 8px 24px rgba(19,110,66,.22); }
+.ds-kpi-clickable.red:hover            { box-shadow: 0 8px 24px rgba(200,48,48,.22); }
+.ds-kpi-clickable.purple:hover         { box-shadow: 0 8px 24px rgba(78,66,184,.22); }
+.ds-kpi-clickable.cyan.kpi-active      { box-shadow: 0 0 0 2px var(--ds-cyan),   0 6px 18px rgba(0,122,138,.22); }
+.ds-kpi-clickable.red.kpi-active       { box-shadow: 0 0 0 2px var(--ds-red),    0 6px 18px rgba(200,48,48,.2); }
+.ds-kpi-clickable.green.kpi-active     { box-shadow: 0 0 0 2px var(--ds-green),  0 6px 18px rgba(19,110,66,.2); }
+.ds-kpi-clickable.purple.kpi-active    { box-shadow: 0 0 0 2px var(--ds-purple), 0 6px 18px rgba(78,66,184,.2); }
+.ds-kpi-clickable.blue.kpi-active      { box-shadow: 0 0 0 2px var(--ds-blue),   0 6px 18px rgba(30,71,153,.2); }
+.ds-kpi-clickable.amber.kpi-active     { box-shadow: 0 0 0 2px var(--ds-amber),  0 6px 18px rgba(184,112,0,.2); }
+.ds-kpi-clickable.teal.kpi-active      { box-shadow: 0 0 0 2px #008c6a,          0 6px 18px rgba(0,140,106,.2); }
+.ds-kpi-clickable.blue:hover           { box-shadow: 0 8px 24px rgba(30,71,153,.22); }
+.ds-kpi-clickable.amber:hover          { box-shadow: 0 8px 24px rgba(184,112,0,.22); }
+.ds-kpi-clickable.teal:hover           { box-shadow: 0 8px 24px rgba(0,140,106,.22); }
+
+/* ── KPI Filter Badge ── */
+.ds-kpi-filter-badge {
+  display: none; padding: 4px 10px;
+  background: rgba(0,122,138,.09); border: 1px solid rgba(0,122,138,.28);
+  border-radius: 5px; font-size: 11px; font-weight: 600;
+  color: var(--ds-cyan); cursor: pointer; user-select: none; white-space: nowrap;
+}
+.ds-kpi-filter-badge:hover { background: rgba(0,122,138,.16); }
+
+/* ── Progress Card Bar ── */
+.ds-prog-bar-wrap {
+  height: 10px; background: var(--ds-border);
+  border-radius: 5px; overflow: hidden; margin: 10px 0 4px;
+}
+.ds-prog-bar-fill { height: 100%; border-radius: 5px; transition: width .5s ease, background .4s; }
+@keyframes pulseBad { 0%,100%{opacity:1} 50%{opacity:.4} }
+.ds-prog-bar-fill.overstage { animation: pulseBad 1.2s ease-in-out infinite; }
+
+/* ── Inline Progress Bar (inside Steps column in tracker table) ── */
+.ds-inline-bar-wrap {
+  height: 6px; background: var(--ds-border);
+  border-radius: 3px; overflow: hidden; margin: 8px 0 3px;
+}
+.ds-inline-bar-fill {
+  height: 100%; border-radius: 3px; transition: width .5s ease, background .4s;
+}
+.ds-inline-bar-fill.overstage { animation: pulseBad 1.2s ease-in-out infinite; }
+.ds-inline-bar-label {
+  font-size: 10px; color: var(--ds-muted); font-family: var(--ds-mono);
+  letter-spacing: .02em;
+}
+
+/* ── Progress Steps (in modal) ── */
+.ds-prog-step {
+  padding: 11px 14px; background: var(--ds-surface2);
+  border: 1px solid var(--ds-border); border-radius: 8px;
+  margin-bottom: 8px; transition: border-color .14s, background .14s;
+}
+.ds-prog-step.active  { border-color: rgba(184,112,0,.45);  background: rgba(184,112,0,.05); }
+.ds-prog-step.done    { border-color: rgba(19,110,66,.35);  background: rgba(19,110,66,.05); }
+.ds-prog-step.locked  { border-color: rgba(82,98,120,.2);   background: rgba(82,98,120,.03); }
+.ds-prog-step-hdr { display: flex; align-items: center; gap: 10px; }
+.ds-prog-step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--ds-surface3); color: var(--ds-muted);
+  font-size: 11px; font-weight: 800; font-family: var(--ds-mono);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background .14s, color .14s;
+}
+.ds-prog-step.active .ds-prog-step-num { background: rgba(184,112,0,.18); color: var(--ds-amber); }
+.ds-prog-step.done   .ds-prog-step-num { background: rgba(19,110,66,.18); color: var(--ds-green); }
+.ds-prog-step-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+
+/* ── Blocker Banner ── */
+.ds-blocker-banner {
+  background: rgba(200,48,48,.05); border: 1px solid rgba(200,48,48,.3);
+  border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;
+}
+.ds-blocker-banner-title {
+  font-size: 10px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ds-red); margin-bottom: 6px;
+}
+
+/* ── Pagination (re-use parent .pgn/.pgbtn/.pgi if available) ── */
+.ds-pgn {
+  display: flex; justify-content: center; align-items: center;
+  gap: 4px; padding: 10px 14px;
+  background: var(--ds-surface2); border-top: 1px solid var(--ds-border);
+}
+.ds-pgbtn {
+  background: var(--ds-surface); border: 1px solid var(--ds-border);
+  color: var(--ds-text); min-width: 28px; height: 28px; border-radius: 5px;
+  cursor: pointer; font-size: 11.5px; display: inline-flex;
+  align-items: center; justify-content: center;
+  transition: all .13s; font-family: var(--ds-font);
+}
+.ds-pgbtn:hover, .ds-pgbtn.active {
+  background: var(--ds-blue); color: #fff; border-color: var(--ds-blue);
+}
+.ds-pgbtn:disabled { opacity: .3; cursor: default; pointer-events: none; }
+.ds-pgi { font-size: 11px; color: var(--ds-muted); padding: 0 4px; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ds-fgrid { grid-template-columns: 1fr; }
+  .ds-fgrid .ds-fg.span2 { grid-column: span 1; }
+  .ds-kpi-bar { flex-direction: column; }
+  .ds-summary-analytics-grid { grid-template-columns: 1fr !important; }
+}
+</style>
+
+<div id="view-20dstracker" class="view">
+
+  <!-- Topbar -->
+  <div class="ds-topbar">
+    <div>
+      <div class="ds-topbar-title">Centralized Tracker and Updater<span> 20 Days Policy tracker - Powered by GenAI</span></div>
+    </div>
+    <div class="ds-topbar-right">
+      <button class="ds-btn ghost" onclick="DSAgent.refresh()">&#8635; Refresh</button>
+      <button class="ds-btn ghost" onclick="DSAgent.recalculateTotals()" title="Recompute TOTAL_DAYS_ELAPSED for all records — use after manually editing step dates" style="font-size:11px">&#9881; Recalculate</button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="ds-tabs">
+    <div class="ds-tab active" data-dstab="summary"    onclick="DSAgent.switchTab('summary')">Summary</div>
+    <div class="ds-tab"       data-dstab="tracker"     onclick="DSAgent.switchTab('tracker')">Individual Tracker</div>
+    <div class="ds-tab"       data-dstab="pending"     onclick="DSAgent.switchTab('pending')">Pending - Individual Wise</div>
+    <div class="ds-tab"       data-dstab="delayed"     onclick="DSAgent.switchTab('delayed')">Delayed</div>
+    <div class="ds-tab"       data-dstab="cancelled"   onclick="DSAgent.switchTab('cancelled')">Cancelled </div>
+    <div class="ds-tab"       data-dstab="audit"       onclick="DSAgent.switchTab('audit')">Log</div>
+    <div class="ds-tab"       data-dstab="analytics"   onclick="DSAgent.switchTab('analytics')">&#128200; Analytics</div>
+  </div>
+
+  <!-- ──────────────────── SUMMARY TAB ──────────────────── -->
+  <div class="ds-content" id="ds-tab-summary">
+    <div class="ds-kpi-bar" id="ds-kpi-bar">
+      <div class="ds-kpi cyan ds-kpi-clickable" data-kpi="active" onclick="DSAgent.filterByKPI('active')" title="Click to filter Active 20DS employees">
+        <div class="ds-kpi-icon">&#128203;</div>
+        <div class="ds-kpi-val" id="ds-kpi-active20ds">—</div>
+        <div class="ds-kpi-lbl">Active Onboarding</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-active">—</div>
+        <div class="ds-kpi-hint">&#8599; Filter tracker</div>
+      </div>
+      <div class="ds-kpi green ds-kpi-clickable" data-kpi="nsi" onclick="DSAgent.filterByKPI('nsi')" title="Click to filter employees currently in NSI Training">
+        <div class="ds-kpi-icon">&#127979;</div>
+        <div class="ds-kpi-val" id="ds-kpi-nsi">—</div>
+        <div class="ds-kpi-lbl">Under NSI Training</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-nsi">—</div>
+        <div class="ds-kpi-hint">&#8599; Filter tracker</div>
+      </div>
+
+       
+      <div class="ds-kpi amber ds-kpi-clickable" data-kpi="waiteid" onclick="DSAgent.filterByKPI('waiteid')" title="Click to filter employees waiting for EID / Residency">
+        <div class="ds-kpi-icon">&#128196;</div>
+        <div class="ds-kpi-val" id="ds-kpi-waiteid">—</div>
+        <div class="ds-kpi-lbl"> Waiting for Residency / EID Issuance</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-waiteid">—</div>
+        <div class="ds-kpi-hint">&#8599; Filter tracker</div>
+      </div>
+
+<div class="ds-kpi blue ds-kpi-clickable" data-kpi="waitassd" onclick="DSAgent.filterByKPI('waitassd')" title="Click to filter employees waiting for ASSD">
+        <div class="ds-kpi-icon">&#128338;</div>
+        <div class="ds-kpi-val" id="ds-kpi-waitassd">—</div>
+        <div class="ds-kpi-lbl">Waiting for ASSD Certification | Residency Issued</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-waitassd">—</div>
+        <div class="ds-kpi-hint">&#8599; Filter tracker</div>
+      </div>
+
+      <div class="ds-kpi red ds-kpi-clickable" data-kpi="overstage" onclick="DSAgent.filterByKPI('overstage')" title="Click to filter Over-Stage employees (&gt;20 days)">
+        <div class="ds-kpi-icon">&#9888;</div>
+        <div class="ds-kpi-val" id="ds-kpi-overstage">—</div>
+        <div class="ds-kpi-lbl">Exceeds 20 Days Policy</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-overstage">—</div>
+        <div class="ds-kpi-hint">&#8599; Filter tracker</div>
+      </div>
+      <div class="ds-kpi purple ds-kpi-clickable" data-kpi="analytics" onclick="DSAgent.filterByKPI('analytics')" title="Click to open Analytics &amp; Performance Report">
+        <div class="ds-kpi-icon">&#9889;</div>
+        <div class="ds-kpi-val" id="ds-kpi-avgspeed">—</div>
+        <div class="ds-kpi-lbl">Avg Onboarding Completion</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-avgspeed">—</div>
+        <div class="ds-kpi-hint">&#8599; Open analytics</div>
+      </div>
+     
+      <div class="ds-kpi teal ds-kpi-clickable" data-kpi="completed" onclick="DSAgent.filterByKPI('completed')" title="Click to filter fully completed employees">
+        <div class="ds-kpi-icon">&#9989;</div>
+        <div class="ds-kpi-val" id="ds-kpi-completed">—</div>
+        <div class="ds-kpi-lbl">Onboarded Success - With EID/ASSD</div>
+        <div class="ds-kpi-trend neutral" id="ds-kpi-trend-completed">—</div>
+        <div class="ds-kpi-hint">&#8599; Filter tracker</div>
+      </div>
+    </div>
+    <!-- hidden legacy ids kept for backward compat with renderSummary() -->
+    <span id="ds-kpi-total"      style="display:none"></span>
+    <span id="ds-kpi-complete"   style="display:none"></span>
+    <span id="ds-kpi-inprogress" style="display:none"></span>
+    <span id="ds-kpi-delayed"    style="display:none"></span>
+    <span id="ds-kpi-cancelled"  style="display:none"></span>
+
+    <!-- ── Summary Tracker Table (mirrors Tracker tab) ── -->
+    <div class="ds-table-card" style="margin-bottom:14px">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">&#128203; Onboarding Summary</span>
+        <span id="ds-summary-tracker-cnt" style="font-size:11px;color:var(--ds-muted)"></span>
+      </div>
+      <div style="padding:10px 14px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--ds-border);background:var(--ds-surface2)">
+        <div class="ds-search-wrap" style="flex:1;min-width:160px">
+          <span class="ds-si">&#128269;</span>
+          <input type="text" id="ds-sq" placeholder="Search name, ID, designation…" oninput="DSAgent.renderSummaryTracker()">
+        </div>
+        <select class="ds-fsel" id="ds-summary-status" style="min-width:120px;margin-bottom:10px" onchange="DSAgent.renderSummaryTracker()">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="complete">Completed</option>
+        </select>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Elapsed</th>
+              <th class="ds-steps-col-hdr" style="min-width:180px">&#10003; Completed</th>
+              <th class="ds-steps-col-hdr" style="min-width:180px">&#9654; Pending</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ds-summary-tracker-tbody">
+            <tr><td colspan="7"><div class="ds-empty"><div class="ds-empty-icon">&#128203;</div>No records yet.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="ds-summary-tracker-pgn"></div>
+    </div>
+
+    <!-- Unified Onboarding Intelligence -->
+    <div class="ds-table-card">
+      <div class="ds-table-hdr" style="flex-wrap:wrap;gap:8px">
+        <span class="ds-table-hdr-title">&#128202; Unified Onboarding Intelligence</span>
+        <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+          <div class="ds-search-wrap" style="width:230px">
+            <span class="ds-si">&#128269;</span>
+            <input type="text" id="ds-uoi-search" placeholder="Search employee name or ID…" oninput="DSAgent.renderUOI()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison rows: Individual + 20d + 40d -->
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>Scope / Period</th>
+              <th style="text-align:center;width:70px">Records</th>
+              <th style="text-align:center;width:160px">Avg Days to Complete</th>
+              <th style="text-align:center;width:120px">Completion Rate</th>
+              <th style="width:140px">Top Hired By</th>
+              <th style="text-align:center;width:120px">HR Avg Velocity</th>
+            </tr>
+          </thead>
+          <tbody id="ds-uoi-tbody">
+            <tr><td colspan="6"><div class="ds-empty" style="padding:14px;font-style:italic;font-size:11px;color:var(--ds-muted)">&#128269; Search an employee above or switch tabs to load data.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- HR Performance sub-section -->
+      <div style="border-top:2px solid var(--ds-border);padding:10px 18px 6px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:10.5px;font-weight:700;color:var(--ds-muted);letter-spacing:.05em;text-transform:uppercase">&#127941; HR Completion Velocity</span>
+        <span style="font-size:10px;color:var(--ds-muted);opacity:.75">All-time performance across all onboardings</span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>Hired By</th>
+              <th style="text-align:center;width:80px">Total</th>
+              <th style="text-align:center;width:90px">Completed</th>
+              <th style="text-align:center;width:110px">Success Rate</th>
+              <th style="text-align:center;width:130px">Avg Completion</th>
+            </tr>
+          </thead>
+          <tbody id="ds-uoi-hr-tbody">
+            <tr><td colspan="5"><div class="ds-empty" style="padding:12px">No HR data yet.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>/unified onboarding intelligence
+
+    <!-- Step Completion Overview (bottom) -->
+    <div class="ds-table-card" style="margin-top:14px">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">Step Completion Overview</span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl" id="ds-steps-summary-tbl">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Done</th>
+              <th>Pending</th>
+              <th>Problem / Unfit</th>
+              <th>Not Started</th>
+              <th>Progress</th>
+            </tr>
+          </thead>
+          <tbody id="ds-summary-tbody">
+            <tr><td colspan="6" class="ds-empty"><div class="ds-empty-icon">&#9698;</div>No data yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── TRACKER TAB ──────────────────── -->
+  <div class="ds-content" id="ds-tab-tracker" style="display:none">
+    <div class="ds-filter-bar">
+      <div class="ds-search-wrap">
+        <span class="ds-si">&#128269;</span>
+        <input type="text" id="ds-q" placeholder="Search name, ID, designation…" oninput="DSAgent.renderTracker()">
+      </div>
+      <select class="ds-fsel" id="ds-filter-status" style="min-width:130px" onchange="DSAgent.renderTracker()">
+        <option value="">All Status</option>
+        <option value="active">Active</option>
+        <option value="complete">Completed</option>
+      </select>
+      <span class="ds-kpi-filter-badge" id="ds-kpi-filter-badge"></span>
+    </div>
+    <div class="ds-table-card">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">Centralized Onboarding Tracker</span>
+        <span id="ds-tracker-cnt" style="font-size:11px;color:var(--ds-muted)"></span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>Emp ID</th>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Days</th>
+              <th class="ds-steps-col-hdr" style="min-width:180px">&#10003; Completed</th>
+              <th class="ds-steps-col-hdr" style="min-width:180px">&#9654; Pending</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ds-tracker-tbody">
+            <tr><td colspan="7"><div class="ds-empty"><div class="ds-empty-icon">&#128203;</div>No records yet. Transfer a candidate to master data to begin.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="ds-tracker-pgn"></div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── PENDING STEPS TAB ──────────────────── -->
+  <div class="ds-content" id="ds-tab-pending" style="display:none">
+    <div class="ds-table-card">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">Pending Steps</span>
+        <span id="ds-pending-cnt" style="font-size:11px;color:var(--ds-muted)"></span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>Employee Name</th>
+              <th>ID No</th>
+              <th>Onboarded By</th>
+              <th>Progress Path</th>
+              <th>Status</th>
+              <th>Days Elapsed</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="ds-pending-tbody">
+            <tr><td colspan="7"><div class="ds-empty"><div class="ds-empty-icon">&#10004;</div>All steps up to date.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── DELAYED TAB ──────────────────── -->
+  <div class="ds-content" id="ds-tab-delayed" style="display:none">
+    <div class="ds-table-card">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">Delayed Employees (&gt;20 Days)</span>
+        <span id="ds-delayed-cnt" style="font-size:11px;color:var(--ds-muted)"></span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>Emp ID</th>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Transfer Date</th>
+              <th>Days Elapsed</th>
+              <th>Hired By</th>
+              <th>Pending Steps</th>
+            </tr>
+          </thead>
+          <tbody id="ds-delayed-tbody">
+            <tr><td colspan="7"><div class="ds-empty"><div class="ds-empty-icon">&#9989;</div>No delayed records.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── CANCELLED TAB ──────────────────── -->
+  <div class="ds-content" id="ds-tab-cancelled" style="display:none">
+    <div class="ds-table-card">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">Cancelled Records</span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>DS ID</th>
+              <th>Emp ID</th>
+              <th>Name</th>
+              <th>Cancelled On</th>
+              <th>Cancelled By</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody id="ds-cancelled-tbody">
+            <tr><td colspan="6"><div class="ds-empty"><div class="ds-empty-icon">&#128683;</div>No cancelled records.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── AUDIT LOG TAB ──────────────────── -->
+  <div class="ds-content" id="ds-tab-audit" style="display:none">
+    <div style="margin-bottom:12px;text-align:right">
+      <button class="ds-btn cyan" onclick="DSAgent.loadAudit()">&#8635; Load Audit Log</button>
+    </div>
+    <div class="ds-table-card">
+      <div class="ds-table-hdr">
+        <span class="ds-table-hdr-title">Onboarding Audit Log</span>
+        <span id="ds-audit-cnt" style="font-size:11px;color:var(--ds-muted)"></span>
+      </div>
+      <div class="ds-tbl-wrap">
+        <table class="ds-tbl">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Emp ID</th>
+              <th>Name</th>
+              <th>Step</th>
+              <th>Old Status</th>
+              <th>New Status</th>
+              <th>Completed</th>
+              <th>Notes</th>
+              <th>Updated By</th>
+              <th>Role</th>
+              <th>Days Δ</th>
+            </tr>
+          </thead>
+          <tbody id="ds-audit-tbody">
+            <tr><td colspan="11"><div class="ds-empty"><div class="ds-empty-icon">&#128203;</div>Click "Load Audit Log" to fetch records.</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────────────── ANALYTICS TAB ──────────────────── -->
+  <div id="ds-tab-analytics" style="display:none">
+    <!-- populated dynamically by DSAgent._drawAnalytics() -->
+  </div>
+
+</div><!-- /#view-20dstracker -->
+
+<!-- ──────────────────── PROGRESS CARD MODAL ──────────────────── -->
+<div class="ds-modal-overlay" id="ds-m-progress">
+  <div class="ds-modal" style="width:620px">
+    <div class="ds-modal-hdr">
+      <span class="ds-modal-title">&#9998; Update Employee</span>
+      <button class="ds-modal-close" onclick="DSAgent.closeProgressCard()">&#10005;</button>
+    </div>
+    <div class="ds-modal-body">
+      <input type="hidden" id="ds-m-prog-dsid">
+
+      <!-- Employee Info Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+        <div>
+          <div class="ds-flabel">Employee Name</div>
+          <div style="font-size:13px;font-weight:700;color:var(--ds-text);margin-top:3px" id="ds-m-prog-name">—</div>
+        </div>
+        <div>
+          <div class="ds-flabel">Emp ID</div>
+          <div style="font-size:12px;font-family:var(--ds-mono);color:var(--ds-cyan);margin-top:3px" id="ds-m-prog-id">—</div>
+        </div>
+        <div>
+          <div class="ds-flabel">Designation</div>
+          <div style="font-size:12px;color:var(--ds-text);margin-top:3px" id="ds-m-prog-desig">—</div>
+        </div>
+        <div>
+          <div class="ds-flabel">Hired By</div>
+          <div style="font-size:12px;color:var(--ds-text);margin-top:3px" id="ds-m-prog-hr">—</div>
+        </div>
+        <div>
+          <div class="ds-flabel">Transfer Date</div>
+          <div style="font-size:12px;font-family:var(--ds-mono);color:var(--ds-muted);margin-top:3px" id="ds-m-prog-start">—</div>
+        </div>
+      </div>
+
+      <!-- Gradient Progress Bar -->
+      <div class="ds-prog-bar-wrap">
+        <div class="ds-prog-bar-fill" id="ds-m-prog-bar-fill" style="width:0%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:14px">
+        <span style="font-size:10px;color:var(--ds-muted)">Day 0</span>
+        <span style="font-size:11px;font-weight:700;font-family:var(--ds-mono)" id="ds-m-prog-days">DAY 0 / 20</span>
+        <span style="font-size:10px;color:var(--ds-muted)">Day 20</span>
+      </div>
+
+      <!-- Step-by-step list (populated by _renderProgressSteps) -->
+      <div id="ds-m-prog-steps"></div>
+    </div>
+    <div class="ds-modal-ftr">
+      <button class="ds-btn red" id="ds-m-prog-cancel-btn" onclick="DSAgent._progCancel()" style="margin-right:auto">&#10005; Cancel Onboarding</button>
+      <button class="ds-btn ghost" onclick="DSAgent.closeProgressCard()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────── STEP EDITOR MODAL ──────────────────── -->
+<div class="ds-modal-overlay" id="ds-m-step">
+  <div class="ds-modal">
+    <div class="ds-modal-hdr">
+      <span class="ds-modal-title" id="ds-m-step-title">Update Step</span>
+      <button class="ds-modal-close" onclick="DSAgent.closeStepModal()">&#10005;</button>
+    </div>
+    <div class="ds-modal-body">
+      <input type="hidden" id="ds-m-step-dsid">
+      <input type="hidden" id="ds-m-step-key">
+      <div class="ds-fgrid" style="margin-bottom:14px">
+        <div class="ds-fg">
+          <label class="ds-flabel">Status</label>
+          <select class="ds-fsel" id="ds-m-step-status" onchange="DSAgent._onStepStatusChange()"></select>
+        </div>
+        <div class="ds-fg">
+          <label class="ds-flabel">Responsible Person</label>
+          <input type="text" class="ds-fi" id="ds-m-step-responsible" placeholder="HR name">
+        </div>
+        <div class="ds-fg">
+          <label class="ds-flabel">Complete Date</label>
+          <input type="date" class="ds-fi" id="ds-m-step-complete">
+        </div>
+      </div>
+      <div class="ds-fg ds-fg-reason" id="ds-m-step-reason-row" style="margin-bottom:12px;display:none">
+        <label class="ds-flabel">Reason</label>
+        <input type="text" class="ds-fi" id="ds-m-step-reason" placeholder="Reason / details">
+      </div>
+      <div class="ds-fg" style="margin-bottom:14px">
+        <label class="ds-flabel">Notes</label>
+        <textarea class="ds-fta" id="ds-m-step-notes" placeholder="Additional notes…"></textarea>
+      </div>
+      <div class="ds-fg">
+        <label class="ds-flabel">Sub-Steps</label>
+        <div class="ds-substeps" id="ds-m-step-substeps"></div>
+      </div>
+      <!-- NSI training date picker shown conditionally -->
+      <div id="ds-m-nsi-training-date-row" style="display:none;margin-top:12px">
+        <div class="ds-fg">
+          <label class="ds-flabel">Training Date (Scheduled)</label>
+          <input type="date" class="ds-fi" id="ds-m-nsi-training-date">
+        </div>
+      </div>
+    </div>
+    <div class="ds-modal-ftr">
+      <button class="ds-btn ghost" onclick="DSAgent.closeStepModal()">Cancel</button>
+      <button class="ds-btn cyan" onclick="DSAgent.saveStep()">Save Step</button>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────── CANCEL RECORD MODAL ──────────────────── -->
+<div class="ds-modal-overlay" id="ds-m-cancel">
+  <div class="ds-modal" style="width:420px">
+    <div class="ds-modal-hdr">
+      <span class="ds-modal-title">Cancel Onboarding Record</span>
+      <button class="ds-modal-close" onclick="DSAgent.closeCancelModal()">&#10005;</button>
+    </div>
+    <div class="ds-modal-body">
+      <input type="hidden" id="ds-m-cancel-dsid">
+      <div class="ds-fg" style="margin-bottom:12px">
+        <label class="ds-flabel">Cancellation Reason <span style="color:var(--ds-red)">*</span></label>
+        <textarea class="ds-fta" id="ds-m-cancel-reason" placeholder="State the reason for cancelling this onboarding record…"></textarea>
+      </div>
+      <div style="font-size:11px;color:var(--ds-red);margin-top:4px">
+        This action cannot be undone. The record will be moved to the Cancelled view.
+      </div>
+    </div>
+    <div class="ds-modal-ftr">
+      <button class="ds-btn ghost" onclick="DSAgent.closeCancelModal()">Back</button>
+      <button class="ds-btn red" onclick="DSAgent.confirmCancel()">Confirm Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────── RESPONSIBLE HR MODAL ──────────────────── -->
+<div class="ds-modal-overlay" id="ds-m-responsible">
+  <div class="ds-modal" style="width:380px">
+    <div class="ds-modal-hdr">
+      <span class="ds-modal-title">Set Hired By</span>
+      <button class="ds-modal-close" onclick="DSAgent.closeResponsibleModal()">&#10005;</button>
+    </div>
+    <div class="ds-modal-body">
+      <input type="hidden" id="ds-m-resp-dsid">
+      <div class="ds-fg">
+        <label class="ds-flabel">Hired By (HR Officer)</label>
+        <input type="text" class="ds-fi" id="ds-m-resp-name" placeholder="Enter HR officer name">
+      </div>
+    </div>
+    <div class="ds-modal-ftr">
+      <button class="ds-btn ghost" onclick="DSAgent.closeResponsibleModal()">Cancel</button>
+      <button class="ds-btn cyan" onclick="DSAgent.saveResponsible()">Save</button>
+    </div>
+  </div>
+</div>
